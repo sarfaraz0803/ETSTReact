@@ -1,0 +1,62 @@
+.emp_profile{
+    /* border: 2px solid black; 
+    background-image: url(/public/images/cover1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;*/
+    background-color: rgb(251, 243, 231);
+    width: 100%;
+    padding: 10px 0px;
+}
+.emp_profile h2{
+    text-align: center;
+    color: rgb(133, 133, 133);
+    font-size: 40px;
+    margin-top: 5px;
+}
+.main_div{
+    /* border: 1px solid red; */
+    border-radius: 10px;
+    background-color: #fff;
+    width: 70%;
+    margin: 0px auto;
+}
+.main_div .row{
+    height: 80%;
+}
+.main_div form{
+    /* border: 1px solid green; */
+    border-radius: 10px;
+    padding: 10px 0px;
+}
+.timeSheet{
+    background-color: rgb(251, 243, 231);
+    border: 1px solid black;
+    width: 100%;
+    height: 100vh;
+    top: 0% ;
+}
+.timeSheetButton{
+    margin: 0px auto;
+}
+.listofSheet{
+    /* border: 1px solid salmon; */
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 80vh;
+}
+.timeSheetButton{
+    /* border: 1px solid seagreen; */
+    padding: 6px;
+}
+
+@media (max-width:768px){
+    .main_div{
+        width: 100%;
+    }
+}
+
+
+
+
+
+

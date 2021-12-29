@@ -1,0 +1,40 @@
+.sheetClass {
+    height: 100vh;
+    padding: 3px;
+    width: 100%;
+    margin: 0px auto;
+    background-color: rgb(251, 243, 231);
+}
+.sheetClass h2{
+    text-align: center;
+    color: rgb(133, 133, 133);
+}
+
+.sheet_header{
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 15%;
+    padding: 10px 0px;
+    width: 80%;    
+}
+.header_table{
+    /* border: 1px solid green; */
+}
+
+.sheet_body{
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 80%;
+    margin: 5px auto;
+    padding: 5px 0px;
+
+}
+.sheet_body h2{
+    text-align: center;
+    color: rgb(121, 118, 118);
+}
+.listoftask{
+    overflow-y: scroll ;
+    height: 60vh;
+}
+

@@ -1,0 +1,28 @@
+.login_main {
+    background-image: url(/public/images/cover1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.login{
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    /* border: 2px solid green; */
+    border-radius:15px;
+    width:40%;
+    padding: 10px 20px;
+    position: absolute;
+    background-color: #fff;
+}
+
+
+@media (max-width : 576px){
+    .login{
+        width: 100%;
+    }
+}
