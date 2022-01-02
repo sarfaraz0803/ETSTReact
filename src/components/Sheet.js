@@ -2,26 +2,31 @@ import React, { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import NavBar from './NavBar'
 import '../style/TimeSheet.css'
+import Service from './Service'
 
-const TimeSheet = () => {
+const Sheet = () => {
     const { slug, slug1 } = useParams()
     const [finalSheet, setFinalSheet] = useState({sheetId:"",employeeId:"",sheetDate: "",sheetCreatedAt: "",lastLogInTime: "", lastLogOutTime: "",empTask: []})
 
     useEffect(()=>setSheetDetails(),[])
 
     function setSheetDetails(){
-        const empAcc = JSON.parse(localStorage.getItem('EmployeeCredentials'))        
-        const timeSheetList = empAcc.account.timeSheet
-        const oneSheet = timeSheetList.filter(val=> val.sheetDate === slug1)
-        const tymSheet = oneSheet[0]
-        setFinalSheet((preValue)=>{return {...preValue, sheetId:tymSheet.sheetId,employeeId:tymSheet.employeeId,sheetDate:tymSheet.sheetDate,sheetCreatedAt:tymSheet.sheetCreatedAt,lastLogInTime:tymSheet.lastLogInTime,
-        lastLogOutTime:tymSheet.lastLogOutTime,empTask:tymSheet.empTask}})
-        
+        const getOne = {id:slug,date:slug1}
+        Service.getOneSheet(getOne)
+            .then(res=>{
+                if(res.data === 'No Sheet for given empId of given date'){
+                    alert('No Sheet for given empId of given date')
+                }else{
+                    setFinalSheet((preValue)=>{return {...preValue, sheetId:res.data.sheetId,employeeId:res.data.employeeId,sheetDate:res.data.sheetDate,sheetCreatedAt:res.data.sheetCreatedAt,lastLogInTime:res.data.lastLogInTime,
+                        lastLogOutTime:res.data.lastLogOutTime,empTask:res.data.empTask}})
+                }
+            })
+            .catch(err=>console.log(err))        
     }
 
     return (
         <React.Fragment>
-        <NavBar flag={false} role={'Employee'}/>
+        <NavBar flag={false} role={'Manager'}/>
 
         <section className="whole_section">
             <header className="ScriptHeader">
@@ -99,7 +104,7 @@ const TimeSheet = () => {
                                             <td>{val.taskName}</td>
                                             <td>{val.durationOfTask}</td>
                                             <td>{val.taskExpiryDate}</td>
-                                            <td><Link to={`/login/${slug}/${slug1}/${val.taskId}`}>view</Link></td>
+                                            <td><Link to={`/login/operations/${slug}/${slug1}/${val.taskId}`}>view</Link></td>
                                             </tr>
                                         )
                                     })
@@ -121,4 +126,4 @@ const TimeSheet = () => {
     )
 }
 
-export default TimeSheet
+export default Sheet

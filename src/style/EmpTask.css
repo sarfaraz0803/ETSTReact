@@ -1,61 +1,74 @@
-.emptask_main{
-    /* border: 1px solid green;
-    border-radius: 15px; */
-    padding: 5px;
-    background-image: url(/public/images/cover1.jpg);
-    background-repeat: no-repeat;
+.whole_div {
+    background: #67B26F;
+    background-position: center;
     background-size: cover;
+    padding: 50px;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: auto;
+
 }
 .main_heading{
     color: #fff;
+    margin-bottom: 10px;
 }
-.table_body label{
-    color: rgb(54, 53, 53);
-    font-size: 18px;
+
+.main_row{
+    height: 100%;
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+label {
+    float: left;
+    margin: 3px;
+    font-weight: 700;
+}
+
+.btns {
+    margin-top: 20px;
+}
+
+/* .btn {
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    color: #fff;
     font-weight: 600;
-    margin-right: 5px;
-    z-index: -1;
-}
-.buttons{
-    margin-top: 5px;
-    text-align: center;
+    border: none;
+    width: 150px;
+    outline: none;
+    padding: 8px;
+    font-size: 18px;
+} */
+
+.btn{
+    outline: none;
+    text-transform: capitalize;
+    margin: 3px 4px;
+    width: 100px;
 }
 
-.main_div{
-    padding: 5px;
-}
-.task_detail{
-    margin: 0px auto;
-    border: 1px solid red;
-    border-radius: 15px;
-    padding: 7px;
-}
-.task_detail form{
-    margin: 0px auto;
-    width: 75%;
-}
-input{
-    margin: 2px 0px;
+.btn:hover {
+    background-color: red;
+    color: white;
 }
 
+.column {
+    margin: auto;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid green;
+}
 
-@media (max-width:576px) {
-    .emptask_main{
-        border: 1px solid green;
-        border-radius: 15px;
-        padding: 2px 0px;
-        height: 100vh;
-    }
-    .head_div{
-        border: 1px solid red;
-        border-radius: 15px;
-        height: 30%;
-        margin: 1px 0px;
-    }
-    .body_div{
-        border: 1px solid red;
-        border-radius: 15px;
-        height: 70%;
-        margin: 1px 0px;
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+@media screen and (max-width: 768px) {
+    .column {
+        width: 100%;
     }
 }

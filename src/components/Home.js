@@ -8,7 +8,7 @@ const Home = () => {
 
     return (
        <React.Fragment>
-       <NavBar flag={false} />
+       <NavBar />
         <div className='home_page'>        
             <div className='homepage_content'>
                 <h1>Employee Time Sheet Tracker</h1>   

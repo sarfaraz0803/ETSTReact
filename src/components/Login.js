@@ -27,27 +27,12 @@ const Login = () => {
             setManResponseData((preValue)=>{return {userId:store.userId, username:store.username, name:store.name, email:store.email, password:store.password, token:store.token}})
         }
         let empStore = JSON.parse(localStorage.getItem('EmployeeCredentials'))
+        const empCre = JSON.parse(localStorage.getItem('EmpCre'))
         if(empStore !== null){
-            setLogin((preValue)=>{return {...preValue, role:"Employee", loggedIn:true}})
-            setEmpResponseData((preValue)=>{return {account:empStore.account, token:empStore.token}})
+            setLogin((preValue)=>{return {...preValue,username:empCre.username, password:empCre.password, role:"Employee", loggedIn:true}})
+            setEmpResponseData((preValue)=>{return {...preValue, account:empStore.account,token:empStore.token}})
             
         }
-    }
-    const logout = ()=>{
-        if(login.role === "Manager"){
-            Service.managerLogout()
-            .then(res=>{alert(res.data)})
-            .catch(err=>{console.log(err)})
-            setLogin((preValue)=>{return {...preValue, username:"",password:"",role:"",loggedIn:false}})
-            localStorage.removeItem('ManagerCredentials')
-        }else if(login.role === "Employee"){
-            Service.employeeLogout()
-            .then(res=>{alert(res.data)})
-            setLogin((preValue)=>{return {...preValue, username:"",password:"",role:"",loggedIn:false}})
-            localStorage.removeItem('EmployeeCredentials')
-            localStorage.removeItem('EmpCre')
-        }
-        
     }
     
     const handleSubmit=(e)=>{
@@ -67,7 +52,10 @@ const Login = () => {
                     storeCollector()
                 }                
             })
-            .catch(err=>{alert(err)})
+            .catch(err=>{
+                alert(err)
+                setLogin((preValue)=>{return {...preValue,username:"",password:"",role:""}})
+            })
         }else if(login.role === "Employee"){
             Service.employeeLogin(loginDetail)
             .then((response)=>{
@@ -76,13 +64,13 @@ const Login = () => {
                 }else if(response.data === 'Invalid Password'){
                     alert('Invalid Password')
                 }else{
-                    console.log(response.data)
+                    //console.log(response.data)
                     localStorage.setItem('EmployeeCredentials',JSON.stringify(response.data))
                     localStorage.setItem('EmpCre',JSON.stringify(login))
                     storeCollector()
                 }                
             })
-            .catch(err=>{console.log(err)})
+            .catch(err=>{alert(err)})
         }
         
     }
@@ -91,12 +79,12 @@ const Login = () => {
         { 
             login.loggedIn === false?
             <React.Fragment>
-            <NavBar flag={false} />
+            <NavBar />
             <div className="login_main">
                 <div className="login form-group text-center" >
                 <h3>Login</h3>
                 <form onSubmit={handleSubmit} className='mx-auto mt-3'>
-                    <input type="text" name='username' className='form-control my-2' placeholder='Enter Username' value={login.username} onChange={handleInput}/>
+                    <input type="email" name='username' className='form-control my-2' placeholder='Enter Username' value={login.username} onChange={handleInput}/>
                     <input type="password" name='password' className='form-control my-2' placeholder='Enter Password' value={login.password} onChange={handleInput}/>
                     <select name="role" id="role" className='form-control' onChange={handleInput}>
                     <option value="">Please Select Role</option>
@@ -109,8 +97,8 @@ const Login = () => {
             </div> 
             </React.Fragment>          
             : login.role === "Manager"?
-                 <ManagerComp man_data={manResponseData} logout_func={logout} />
-                 : <EmpProfile empCre={login} empData={empResponseData.account} flag={true} logout_func={logout} />
+                 <ManagerComp man_data={manResponseData} />
+                 : <EmpProfile empCre={login} empData={empResponseData.account} />
             
         }
         </React.Fragment>   
@@ -118,3 +106,5 @@ const Login = () => {
 }
 
 export default Login
+
+

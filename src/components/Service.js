@@ -5,7 +5,8 @@ const EMPLOYEE_API_URL = 'http://localhost:8763/employeeProfile'
 
 class Service{
 
-    // Manager API
+    //----------------------------- MANAGER_API----------------------------- 
+
     managerLogin(loginData){
         return axios.post(MANAGER_API_URL+'/login',loginData)
     }
@@ -29,13 +30,10 @@ class Service{
         return authAxios.get('/getAllAccounts')
     }
 
-    //Not Working
     getAccountById(id){
         const store = JSON.parse(localStorage.getItem('ManagerCredentials'))
-        //const reqHeaders = {"Content-Type": "application/json",'Access-Control-Allow-Origin': '*','UserId':`${store.userId}`,'Authorization':`${store.token}`}
-        const authAxios = axios.create({baseURL:MANAGER_API_URL,headers:{UserId:`${store.userId}`,Authorization:`${store.token}`, AccessControlAlllowOrigin :'*'}})
-        return authAxios.get(`/getAllAccounts/${id}`)
-        //
+        const authAxios = axios.create({baseURL:MANAGER_API_URL,headers:{UserId:`${store.userId}`,Authorization:`${store.token}`}})
+        return authAxios.get(`/getAccountById/${id}`)
     }
 
     updateAccountById(id,account){
@@ -84,7 +82,7 @@ class Service{
 
 
 
-    //  Employee API
+    //----------------------------- Employee API ----------------------------- 
 
     employeeLogin(empLoginData){
         return axios.post(EMPLOYEE_API_URL+'/login',empLoginData)
@@ -96,11 +94,16 @@ class Service{
         return empAxios.post('/logout')
     }
 
-    //Not Working
     empUpdate(employeeUpdateData){
         const empStore = JSON.parse(localStorage.getItem('EmployeeCredentials'))
-        const empAxios = axios.create({baseURL:EMPLOYEE_API_URL,headers:{UserId:`${empStore.account._id}`,Authorization:`${empStore.token}`,AccessControlAllowOrigin:'*'}})
-        //return empAxios.post('/updateAccount',employeeUpdateData)
+        const empAxios = axios.create({baseURL:EMPLOYEE_API_URL,headers:{UserId:`${empStore.account._id}`,Authorization:`${empStore.token}`}})
+        return empAxios.put('/updateAccount',employeeUpdateData)
+    }
+
+    empTaskUpdate(updatedTaskData){
+        const empStore = JSON.parse(localStorage.getItem('EmployeeCredentials'))
+        const empAxios = axios.create({baseURL:EMPLOYEE_API_URL,headers:{UserId:`${empStore.account._id}`,Authorization:`${empStore.token}`}})
+        return empAxios.put('/updateTaskFields',updatedTaskData)
     }
 
 }

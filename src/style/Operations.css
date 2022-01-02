@@ -1,0 +1,43 @@
+
+.parent_div{
+    background-color: rgb(251, 243, 231);
+}
+.column_1{
+    border-radius: 10px;
+    padding: 10px 0px ;
+}
+.column_1 button {
+    width: 100%;
+}
+.op_btns{
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.show_div{
+    overflow: hidden;
+    overflow: scroll;
+    height: 100%;
+    padding: 3px;
+    border-radius: 10px;
+}
+.column_2{
+    border-radius: 10px;
+}
+
+@media screen and (max-width:450px) {
+    .parent_div {
+        overflow-y: scroll;
+        overflow: hidden;
+    }
+    .column_1{
+        padding: 5px 0px;
+    }
+    .column_1 button{
+        width: 100%;
+    }
+    .show_div{
+        width: 100%;
+        overflow: scroll;
+    }
+}
+

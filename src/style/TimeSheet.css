@@ -1,9 +1,81 @@
-.sheetClass {
+.whole_section {
+    background: #67B26F;
+    padding: 0;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    color: #000;
+
+}
+
+.rt-heading {
+    padding-top: 10px;
+}
+
+.rt-heading h1 {
+    color: #fff;
+
+}
+
+.student-profile .card {
+    border-radius: 10px;
+}
+
+.student-profile .card .card-header .profile_img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    margin: 10px auto;
+    border: 10px solid #ccc;
+    border-radius: 50%;
+}
+
+.student-profile .card h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.student-profile .card p {
+    font-size: 16px;
+    color: #000;
+}
+
+.student-profile .table th,
+.student-profile .table td {
+    font-size: 14px;
+    padding: 5px 10px;
+    color: #000;
+}
+
+.sheetDetail {
+    height: 250px;
+}
+
+.first_row {
+    height: 100%;
+}
+
+.second_row .card-body {
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    overflow: scroll;
+}
+
+@media screen and (max-width:576px) {
+    .student-profile .card {
+        overflow: hidden;
+        overflow: scroll;
+    }
+}
+
+/* .sheetClass {
     height: 100vh;
     padding: 3px;
     width: 100%;
     margin: 0px auto;
     background-color: rgb(251, 243, 231);
+    border: 1px solid red;
 }
 .sheetClass h2{
     text-align: center;
@@ -15,10 +87,10 @@
     border-radius: 10px;
     height: 15%;
     padding: 10px 0px;
-    width: 80%;    
-}
-.header_table{
-    /* border: 1px solid green; */
+    width: 80%;  
+    overflow: hidden;  
+    overflow: scroll;
+    scrollbar-width: 1px;
 }
 
 .sheet_body{
@@ -38,3 +110,5 @@
     height: 60vh;
 }
 
+
+ */

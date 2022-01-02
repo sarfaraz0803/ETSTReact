@@ -1,3 +1,5 @@
+
+
 .whole_section {
     background: #67B26F;
     /* fallback for old browsers 
@@ -11,12 +13,10 @@
     color: #000;
 
 }
-
-.rt-heading {
+.rt-heading{
     padding-top: 10px;
 }
-
-.rt-heading h1 {
+.rt-heading h1{
     color: #fff;
 
 }
@@ -24,8 +24,6 @@
 .student-profile .card {
     border-radius: 10px;
 }
-
-
 .student-profile .card .card-header .profile_img {
     width: 180px;
     height: 180px;
@@ -34,22 +32,14 @@
     border: 10px solid #ccc;
     border-radius: 50%;
 }
-.update_footer{
-    background-color: #fff;
-}
-.update_footer .btn{
-    width: 80%;
-}
 .student-profile .card h3 {
     font-size: 20px;
     font-weight: 700;
 }
-
 .student-profile .card p {
     font-size: 16px;
     color: #000;
 }
-
 .student-profile .table th,
 .student-profile .table td {
     font-size: 14px;
@@ -57,15 +47,14 @@
     color: #000;
 }
 
-.empDetail {
+.empDetail{
     height: 510px;
 }
 
-.first_row {
+.first_row{
     height: 100%;
 }
-
-.second_row .card-body {
+.second_row .card-body{
     border-radius: 10px;
     padding: 3px;
     margin-bottom: 10px;
@@ -74,7 +63,7 @@
 }
 
 @media screen and (max-width:576px) {
-    .student-profile .card {
+    .student-profile .card{
         overflow: hidden;
         overflow: scroll;
     }

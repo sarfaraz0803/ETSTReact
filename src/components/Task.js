@@ -4,67 +4,67 @@ import '../style/EmpTask.css'
 import NavBar from './NavBar'
 import Service from './Service'
 
-const EmpTask = () => {
+const Task = () => {
     const [employeeTask,setEmployeeTask] = useState({taskId:"",taskName:"",description:"",taskCreation:"",durationOfTask:"",taskExpiryDate:"",comment:"",status:"",consumedHours:"",remainingHours:"",progress:"" })
     const { slug, slug1, slug2 } = useParams()    
-    const [timer, setTimer] = useState({active:false,value:0,result:0})
+    //const [taskList,setTaskList] = useState([])
+
 
     useEffect(()=>setDefaults(),[])
 
     function setDefaults(){
-        const empAcc = JSON.parse(localStorage.getItem('EmployeeCredentials'))
-        const sheet = empAcc.account.timeSheet.filter(val => val.sheetDate === slug1)
-        const finalSheet = sheet[0]
-        const tasksList = finalSheet.empTask
-        const oneTask = tasksList.filter(val=> val.taskId === slug2 )
-        const finalTask = oneTask[0]
-        setEmployeeTask((preValue)=>{return{...preValue,taskId:finalTask.taskId,taskName:finalTask.taskName,description:finalTask.description,taskCreation:finalTask.taskCreation,durationOfTask:finalTask.durationOfTask,
-           taskExpiryDate:finalTask.taskExpiryDate,comment:finalTask.comment,status:finalTask.status,consumedHours:finalTask.consumedHours,remainingHours:finalTask.remainingHours,progress:finalTask.progress }})
+        console.log("hello")
+    //     const getOne = {id:slug,date:slug1}
+    //     Service.getOneSheet(getOne)
+    //         .then(res=>{
+    //            if(res.data === 'No Sheet for given empId of given date'){
+    //                 alert('No Sheet for given empId of given date')
+    //             }else{
+    //                 setTaskList(()=>res.data.empTask)
+    //             }
+    //         })
+    //        .catch(err=>console.log(err))
 
+    //     setTimeout(() => {
+    //         const oneTask = taskList.filter(val=> val.taskId === slug2 )
+    //     const finalTask = oneTask[0]
+    //     console.log(oneTask)
+    //     if(finalTask !== null){
+    //         setEmployeeTask((preValue)=>{return{...preValue,taskId:finalTask.taskId,taskName:finalTask.taskName,description:finalTask.description,taskCreation:finalTask.taskCreation,
+    //             durationOfTask:finalTask.durationOfTask,taskExpiryDate:finalTask.taskExpiryDate,comment:finalTask.comment,status:finalTask.status,consumedHours:finalTask.consumedHours,
+    //             remainingHours:finalTask.remainingHours,progress:finalTask.progress }})
+    //         } 
+    //     }, 3000);
+        
+        
     }
+    
+    
+             
 
+
+
+
+    //  Input_Field_Handler
     function taskInputHandler(e){
-        const { name, value } = e.target
+       const { name, value } = e.target
         setEmployeeTask((preValue)=>{return {...preValue, [name]:value}})
     }
 
     function updateTaskField(){
-        const updatedTask = {empId:slug,date:slug1,taskId:employeeTask.taskId,comment:employeeTask.comment,status:employeeTask.status,consumedHours:Number(employeeTask.consumedHours) }
-        Service.empTaskUpdate(updatedTask)
-        .then(res=>{
-            if(res.data === 'Status Updated'){
-                alert('Successfully Updated..!! Results will be reflect after next login')
-            }else(
-                alert(res.data)
-            )
-        })
-        .catch(err=>console.log(err))
-        //console.log(updatedTask)
+        const updatedTask = {empId:slug,date:slug1,taskId:employeeTask.taskId,taskName:"",description:"",durationOfTask:"",taskExpiryDate:"",comment:"" }
+        console.log(updatedTask)
     }
 
-    function counter(){
-        if(timer.active !== true){
-            console.log(`StartTime : ${new Date().getTime()}`)
-            setTimer((preValue)=>{return {...preValue, active:true,value:new Date().getTime()}})
-            
-        }else{
-            const workDuration = Number(((new Date().getTime() - timer.value)/(60*60*1000)).toFixed(3))
-            setTimer((preValue)=>{return {...preValue, active:false,value:new Date().getTime(),result:workDuration}})
-            console.log(`StopTime : ${timer.value} and work duration : ${workDuration} hours`)
-            
-            const updateConsumedHours = employeeTask.consumedHours+workDuration
-            setEmployeeTask((preValue)=>{return {...preValue,consumedHours:updateConsumedHours}})
-
-        }
-    }
+    
 
     
 
     return (
         <React.Fragment>
-        <NavBar flag={false} role={'Employee'} />
+        <NavBar flag={false} role={'Manager'} />
         <div className='container-fluid whole_div'>
-            <h1 className='text-center main_heading mb-4'>Employee Task Detail</h1>
+            <h1 className='text-center main_heading mb-4'>Task Detail</h1>
             <div className='row main_row mx-auto py-4'>
                 <div className="col-lg-6 col-md-6 mb-4">
                     <div id="first-group">
@@ -80,7 +80,7 @@ const EmpTask = () => {
 
                         <div className="form-group" id="content">
                             <label htmlFor="duration">Total Duration(in hrs) : </label>
-                            <input type="text" className='input-group form-control my-1' name='durationOfTask' defaultValue={employeeTask.durationOfTask} readOnly/>
+                            <input type="number" className='input-group form-control my-1' name='durationOfTask' onChange={taskInputHandler} value={employeeTask.durationOfTask} />
                         </div>
 
                         <div className="form-group" id="content">
@@ -90,7 +90,7 @@ const EmpTask = () => {
 
                         <div className="form-group" id="content">
                             <label htmlFor="description">Description : </label>
-                            <textarea name="description" className='input-group form-control' id="description" cols="50" rows="9"  defaultValue={employeeTask.description} readOnly ></textarea>
+                            <textarea name="description" className='input-group form-control' id="description" cols="50" rows="9" onChange={taskInputHandler} value={employeeTask.description} ></textarea>
                         </div>
                         
                     </div>
@@ -99,12 +99,12 @@ const EmpTask = () => {
                     <div id="second-group">
                         <div className="form-group" id="content">
                             <label htmlFor="taskname">TaskName : </label>
-                            <input type="text" className='input-group form-control my-1' name='taskname' defaultValue={employeeTask.taskName} readOnly/>
+                            <input type="text" className='input-group form-control my-1' name='taskName' onChange={taskInputHandler} value={employeeTask.taskName} />
                         </div>
 
                         <div className="form-group" id="content">
                             <label htmlFor="expiry">Expiry Date : </label>
-                            <input type="text" className='input-group form-control my-1' name='taskExpiryDate'  defaultValue={employeeTask.taskExpiryDate} readOnly/>
+                            <input type="date" className='input-group form-control my-1' name='taskExpiryDate' onChange={taskInputHandler} value={employeeTask.taskExpiryDate} />
                         </div>
 
                         <div className="form-group" id="content">
@@ -119,7 +119,7 @@ const EmpTask = () => {
 
                         <div className="form-group" id="content">
                             <label htmlFor="status">Status : </label>
-                            <input type="text" className='input-group form-control my-1'  name='status' onChange={taskInputHandler} value={employeeTask.status} />
+                            <input type="text" className='input-group form-control my-1'  name='status' defaultValue={employeeTask.status} readOnly/>
                         </div>
 
                         <div className="form-group" id="content">
@@ -130,18 +130,11 @@ const EmpTask = () => {
                     </div>
                 </div>
                 <div className="btns mx-auto text-center">
-                    <p>Note: Dont forget to update the task after Stop, Updation  will be reflect at next login </p>
-                    {
-                        timer.active !== true ? 
-                            <button className='btn btn-success mx-2' onClick={counter}>Start</button>
-                            : <button className='btn btn-danger mx-2' onClick={counter}>Stop</button>
-                    }
-                    
-                    <button className='btn btn-success mx-2' onClick={updateTaskField} >Update</button>
+                    <button className='btn btn-success mx-2' onClick={()=>updateTaskField} >Update</button>
                 </div>
             </div>        
         </div>
         </React.Fragment>
     )
 }
-export default EmpTask
+export default Task

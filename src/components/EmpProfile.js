@@ -1,194 +1,250 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import Service from './Service'
 import '../style/EmpProfile.css'
 import NavBar from './NavBar'
+import Service from './Service'
+import { Button, Modal, Form} from 'react-bootstrap'
 
 const EmpProfile = (props) => {
-    const [show, setShow] = useState(true)
-    const [loginCre, setLoginCre] = useState({_id:"",username:"",password:""})
-    const [employeeData, setEmployeeData] = useState({name:"",address:"",age:0,email:"",mobile:"",gender:"",department:"",socialCategory:"",
-        physicallyChallenged:"",religion:"",dateOfBirth:"",maritalStatus:"",profileStatus:"",fatherName:""})
-    const emp = props.empData.employee
-    const empPassword = JSON.parse(localStorage.getItem('EmpCre'))
-    const account = props.empData.timeSheet
+    const wholeAcc = props.empData
+    const empCre = props.empCre
+    const [employeeData, setEmployeeData] = useState({id:wholeAcc._id,username:wholeAcc.username,password:empCre.password,name:wholeAcc.employee.name,address:wholeAcc.employee.address,age:wholeAcc.employee.age,
+        email:wholeAcc.employee.email,mobile:wholeAcc.employee.mobile,gender:wholeAcc.employee.gender,department:wholeAcc.employee.department,socialCategory:wholeAcc.employee.socialCategory,
+        physicallyChallenged:wholeAcc.employee.physicallyChallenged,religion:wholeAcc.employee.religion,dateOfBirth:wholeAcc.employee.dateOfBirth,maritalStatus:wholeAcc.employee.maritalStatus,
+        profileStatus:wholeAcc.employee.profileStatus,fatherName:wholeAcc.employee.fatherName})
+    const empSheet = props.empData.timeSheet
+    const [updateEmpModal,setUpdateEmpModal] = useState(false)  //  Employee_Account_Update_Modal_Handler
 
-    useEffect(()=>setDefaults(),[])
-    
-    const setDefaults = ()=>{
-        
-        setEmployeeData((preValue)=>{return {...preValue, name:emp.name, address:emp.address, age:emp.age, email:emp.email, mobile:emp.mobile, gender:emp.gender, department:emp.department, socialCategory:emp.socialCategory,
-                    physicallyChallenged:emp.physicallyChallenged, religion:emp.religion, dateOfBirth:emp.dateOfBirth,maritalStatus:emp.maritalStatus, profileStatus:emp.profileStatus, fatherName:emp.fatherName }})
-        setLoginCre((preValue)=>{return {...preValue,_id:props.empData._id,username:props.empData.username, password:empPassword.password}})
-        //console.log(account)
-    }
     
 
-    const inputHandler = (event)=>{
-        const {name, value} = event.target;
-        name === 'password'?
-        setLoginCre((preValue)=>{return {...preValue, [name]:value }}):
-        setEmployeeData((preValue)=>{return {...preValue, [name]:value }})
-        
+    function updateEmpDetails(e){
+        e.preventDefault()
+        const employeeDetail = {_id:employeeData.id, username:employeeData.username, password:employeeData.password,employee:{name:employeeData.name,address:employeeData.address,age:employeeData.age,
+            email:employeeData.username,mobile:employeeData.mobile,gender:employeeData.gender,department:employeeData.department,socialCategory:employeeData.socialCategory,
+            physicallyChallenged:employeeData.physicallyChallenged,religion:employeeData.religion,dateOfBirth:employeeData.dateOfBirth,maritalStatus:employeeData.maritalStatus,profileStatus:employeeData.profileStatus,
+            fatherName:employeeData.fatherName}}
+        Service.empUpdate(employeeDetail)
+        .then(res=>{
+            if(res.data._id === employeeDetail._id){
+                alert('Successfully Updated')
+                setUpdateEmpModal(false)
+            }else{
+                console.log(res)
+            }
+        })
+        .catch(err=>console.log(err))
     }
 
-    const submitHandler = (event)=>{
-        event.preventDefault()
-        const empUpdateData = {_id:loginCre._id,username:loginCre.username,password:empPassword.password,employee:employeeData}
-        console.log(empUpdateData)
-        // Service.empUpdate(empUpdateData)
-        // .then((response=>console.log(response)))
-        // .catch(err=>console.log(err))
+    function updateModalInputHandler(e){
+        const { name, value } = e.target
+        setEmployeeData((preValue)=>{return{...preValue, [name]:value}})
     }
-
+    
     return (
         <React.Fragment>
-        <NavBar flag={props.flag} logout={props.logout_func} />
-        {
-            show === true?
-        
-        <div className='emp_profile'>
-        <h2>Profile</h2>
-        <div className='main_div'>
-            <form onSubmit={submitHandler}>
-                <div className="row mx-auto">
+        <NavBar flag={false} role={'Employee'} />
 
-                    <div className="col-lg-6 col-md-6 col-6">
-                        <div className='form-group mt-1'>
-                            <label htmlFor="useridControl">UserId</label>
-                            <input type="text" className="form-control" name='userId' id="useridControl" defaultValue={loginCre._id} readOnly/>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="nameControl">Name</label>
-                            <input type="text" className="form-control" name='name' id="nameControl" placeholder="Enter Your Name" onChange={inputHandler} value={employeeData.name}/>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="addressControl">Address</label>
-                            <input type="text" className="form-control" name='address' id="addressControl" placeholder="Enter Your Address" onChange={inputHandler} value={employeeData.address}/>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="ageControl">Age</label>
-                            <input type="nubmer" className="form-control" name='age' id="ageControl" placeholder="Enter Your Age" onChange={inputHandler} value={employeeData.age}/>
-                        </div>
-                        <div className="form-group mt-1">
-                            <label htmlFor="emailControl">Email address/ Username</label>
-                            <input type="email" className="form-control" name='email' id="emailControl" placeholder="name@example.com" onChange={inputHandler} value={employeeData.email}/>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="mobileControl">Mobile Number</label>
-                            <input type="number" className="form-control" name='mobile' id="mobileControl" placeholder="Enter Your Mobile Number"  onChange={inputHandler} value={employeeData.mobile}/>
-                        </div>
-                        <div className="form-group mt-1">
-                            <label htmlFor="genderControl">Gender</label>
-                            <select className="form-control" id="genderControl" name='gender' onChange={inputHandler} value={employeeData.gender}>
-                            <option value="">--select--</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            </select>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="departmentControl">Department</label>
-                            <input type="text" className="form-control" name='department' id="departmentControl" placeholder="Enter Your Department" onChange={inputHandler} value={employeeData.department}/>
-                        </div>                
-                    </div>
+        {/*----------------------------------------Employee_Details_Update_Modal--------------------------------------*/}
 
-                    <div className="col-lg-6 col-md-6 col-6">
+        {/* ---------Update_Account_Modal--------- */}
 
-                        <div className='form-group mt-1'>
-                            <label htmlFor="passwordControl">Password</label>
-                            <input type="password" className="form-control" name='password' id="passwordControl" placeholder="Enter Your Password" onChange={inputHandler} value={loginCre.password}/>
-                        </div> 
-                        <div className='form-group mt-1'>
-                            <label htmlFor="categoryControl">Category</label>
-                            <select className="form-control" id="categoryControl" name='socialCategory' onChange={inputHandler} value={employeeData.socialCategory}>
-                            <option value="">--select--</option>
-                            <option value="general">General</option>
-                            <option value="obc">OBC</option>
-                            <option value="sc">SC</option>
-                            <option value="st">ST</option>
-                            <option value="others">others</option>
-                            </select>
-                        </div>
-                        <div className="form-group mt-1">
-                            <label htmlFor="disabilityControl">Physically Challenged</label>
-                            <select className="form-control" id="disabilityControl" name='physicallyChallenged' onChange={inputHandler} value={employeeData.physicallyChallenged}>
-                            <option value="">--select--</option>
-                            <option value="false">False</option>
-                            <option value="true">True</option>
-                            </select>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="religionControl">Religion</label>
-                            <input type="text" className="form-control" name='religion' id="religionControl" placeholder="Enter Your Religion" onChange={inputHandler} value={employeeData.religion}/>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="dobControl">Date Of Birth</label>
-                            <input type="date" className="form-control" name='dateOfBirth' id="dobControl" onChange={inputHandler} value={employeeData.dateOfBirth}/>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="maritalControl">Marital Status</label>
-                            <select className="form-control" id="maritalControl" name='maritalStatus' onChange={inputHandler} value={employeeData.maritalStatus}>
-                            <option value="">--select--</option>
-                            <option value="married">Married</option>
-                            <option value="unmarried">Unmarried</option>
-                            <option value="divorsed">Divorsed</option>
-                            <option value="others">others</option>
-                            </select>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="profileStatusControl">Profile Status</label>
-                            <input type="text" className="form-control" name='profileStatus' id="profileStatusControl" placeholder="Enter Profile Status"  onChange={inputHandler} value={employeeData.profileStatus}/>
-                        </div>
-                        <div className='form-group mt-1'>
-                            <label htmlFor="nameControl">Father Name</label>
-                            <input type="text" className="form-control" name='fatherName' id="fatherControl" placeholder="Enter Your Father Name" onChange={inputHandler} value={employeeData.fatherName}/>
-                        </div>
-                    </div>
+        <Modal show={updateEmpModal} onHide={()=>{setUpdateEmpModal(false)}} backdrop="static" keyboard={false} >
+            <Modal.Header closeButton>
+            <Modal.Title>Update Account</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {/*Form*/}
+                <Form onSubmit={updateEmpDetails} method='POST'>
+                    <Form.Group className="mb-3" controlId="empId">
+                        <Form.Label>Employee Id</Form.Label>
+                        <Form.Control type="number" name='id' defaultValue={employeeData.id} readOnly />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empUsername">
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control type="email" name='username' defaultValue={employeeData.username} readOnly />                    
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" placeholder="Enter password" name='password' onChange={updateModalInputHandler} value={employeeData.password} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empName">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" placeholder="Enter your name" name='name' onChange={updateModalInputHandler} value={employeeData.name} required />                    
+                    </Form.Group>                    
+                    <Form.Group className="mb-3" controlId="empAddress">
+                        <Form.Label>Address</Form.Label>
+                        <Form.Control type="text" placeholder="Enter your address" name='address' onChange={updateModalInputHandler} value={employeeData.address} required />                    
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empAge">
+                        <Form.Label>Age</Form.Label>
+                        <Form.Control type="number" placeholder="Enter your age" name='age' onChange={updateModalInputHandler} value={employeeData.age} required />                    
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empEmail">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control type="email" name='email' defaultValue={employeeData.email} readOnly />                    
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empMobile">
+                        <Form.Label>Mobile</Form.Label>
+                        <Form.Control type="number" placeholder="Enter your contact number" name='mobile' onChange={updateModalInputHandler} value={employeeData.mobile} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empGender">
+                        <Form.Label>Gender</Form.Label>
+                        <Form.Control type="text" placeholder="Your Gender" name='gender' onChange={updateModalInputHandler} value={employeeData.gender} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empDepartment">
+                        <Form.Label>Department</Form.Label>
+                        <Form.Control type="text" placeholder="Enter your department" name='department' onChange={updateModalInputHandler} value={employeeData.department} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empCategory">
+                        <Form.Label>Social Category</Form.Label>
+                        <Form.Control type="text" placeholder="Enter your category" name='socialCategory' onChange={updateModalInputHandler} value={employeeData.socialCategory} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empPWD">
+                        <Form.Label>Physically Challenged</Form.Label>
+                        <Form.Control type="text" placeholder="True / False" name='physicallyChallenged' onChange={updateModalInputHandler} value={employeeData.physicallyChallenged} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empReligion">
+                        <Form.Label>Religion</Form.Label>
+                        <Form.Control type="text" placeholder="Enter your religion" name='religion' onChange={updateModalInputHandler} value={employeeData.religion} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empDateOfBirth">
+                        <Form.Label>Date Of Birth</Form.Label>
+                        <Form.Control type="date" name='dateOfBirth' onChange={updateModalInputHandler} value={employeeData.dateOfBirth} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empMaritalStatus">
+                        <Form.Label>Marital Status</Form.Label>
+                        <Form.Control type="text" placeholder="Enter your marital status" name='maritalStatus' onChange={updateModalInputHandler} value={employeeData.maritalStatus} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empProfileStatus">
+                        <Form.Label>Profile Status</Form.Label>
+                        <Form.Control type="text" placeholder="Enter your profile status(active/deactive)" name='profileStatus' onChange={updateModalInputHandler} value={employeeData.profileStatus} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="empFathername">
+                        <Form.Label>Father Name</Form.Label>
+                        <Form.Control type="text" placeholder="Enter your father name" name='fatherName' onChange={updateModalInputHandler} value={employeeData.fatherName} required />
+                    </Form.Group>                    
+                    <Button variant="primary" type="submit">Update</Button>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={()=>{setUpdateEmpModal(false)}}>Close</Button>
+            {/*<Button variant="primary" onClick={addAccount}>Understood</Button>*/}
+            </Modal.Footer>
+        </Modal>
+
+        {/*----------------------------------------React_JSX--------------------------------------*/}
+
+        <section className='whole_section'>
+
+        <header className="ScriptHeader">
+        <div className="rt-container">
+            <div className="col-rt-12">
+                <div className="rt-heading text-center">
+                    <h1> Employee Account</h1>
                 </div>
-                <div className='form-group mt-4 text-center'>
-                    <button className='btn btn-success mx-2' type='submit'>Update</button>
-                    <button className='btn btn-danger mx-2' onClick={()=>{setShow(false)}}>Show TimeSheets</button>
-                </div>
-            </form>
-            
-        </div> 
+            </div>
         </div>
-        :
-        <div className='timeSheet'>
-                <h2 className='my-3 text-center'>Sheets List</h2>
-                <hr />
-                <div className='listofSheet'>
-                    <table className='table table-striped'>
-                    <thead>
-                        <tr>
-                            <th>Sheet Id</th>
-                            <th>Sheet Date</th>
-                            <th>LastLogin</th>
-                            <th>LastLogout</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            {
-                                account.map((val,ind)=>{
-                                    return (
-                                        <tr key={val.sheetId}>
-                                            <td>{val.sheetId}</td>
-                                            <td>{val.sheetDate}</td>
-                                            <td>{val.lastLogInTime}</td>
-                                            <td>{val.lastLogOutTime}</td>
-                                            <td><Link className="nav-link text-dark" to={`/login/${val.sheetId}`} >view</Link></td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                    </tbody>
-                </table>
+        </header>
+        <hr className='text-light'/>
+
+        <section className='account_section'>
+        <div className="rt-container">
+            <div className="col-rt-12">
+                <div className="Scriptcontent">
+                    <div className="student-profile py-4">
+                        <div className="container">
+                            {/* First_Row */}
+                            <div className="row mx-auto first_row">
+                                <div className="col-lg-4 mb-1">
+                                    <div className="card shadow-sm" style={{height:"100%"}}>
+                                    <div className="card-header bg-transparent text-center">
+                                        <img className="profile_img" src="https://source.unsplash.com/600x300/?student" alt="student dp" />
+                                        <h3>{employeeData.name}</h3>
+                                    </div>
+                                    <div className="card-body">
+                                        <p className="mb-0"><strong className="pr-1">Employee ID:</strong>{employeeData.id}</p>
+                                        <p className="mb-0"><strong className="pr-1">Username:</strong>{employeeData.username}</p>
+                                    </div>
+                                    <div className='card-footer update_footer text-center'>
+                                        <button className='btn btn-success' onClick={()=>setUpdateEmpModal(true)}>Update Profile</button> 
+                                    </div>
+                                    </div>
+                                </div>
+                                <div className="col-lg-8">
+                                    <div className="card shadow-sm empDetail">
+                                    <div className="card-header bg-transparent border-0">
+                                        <h3 className="mb-0"><i className="far fa-clone pr-1"></i>General Information</h3>
+                                    </div>
+                                    <div className="card-body pt-0">
+                                        <table className="table table-bordered">
+                                            <tbody>
+                                            <tr><th width="30%">Name</th><td width="2%">:</td><td>{employeeData.name}</td></tr>
+                                            <tr><th width="30%">Address	</th><td width="2%">:</td><td>{employeeData.address}</td></tr>
+                                            <tr><th width="30%">Age</th><td width="2%">:</td><td>{employeeData.age}</td></tr>
+                                            <tr><th width="30%">Email</th><td width="2%">:</td><td>{employeeData.email}</td></tr>
+                                            <tr><th width="30%">Mobile</th><td width="2%">:</td><td>{employeeData.mobile}</td></tr>
+                                            <tr><th width="30%">Gender</th><td width="2%">:</td><td>{employeeData.gender}</td></tr>
+                                            <tr><th width="30%">Department</th><td width="2%">:</td><td>{employeeData.department}</td></tr>
+                                            <tr><th width="30%">Category</th><td width="2%">:</td><td>{employeeData.socialCategory}</td></tr>
+                                            <tr><th width="30%">Pwd</th><td width="2%">:</td><td>{employeeData.physicallyChallenged}</td></tr>
+                                            <tr><th width="30%">Religion</th><td width="2%">:</td><td>{employeeData.religion}</td></tr>
+                                            <tr><th width="30%">Date Of Birth</th><td width="2%">:</td><td>{employeeData.dateOfBirth}</td></tr>
+                                            <tr><th width="30%">Marital Status</th><td width="2%">:</td><td>{employeeData.maritalStatus}</td></tr>
+                                            <tr><th width="30%">Profile Status</th><td width="2%">:</td><td>{employeeData.profileStatus}</td></tr>
+                                            <tr><th width="30%">Father Name</th><td width="2%">:</td><td>{employeeData.fatherName}</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Second_Row */}
+                            <div className="row mx-auto second_row">
+                                <div className="card shadow-sm my-1">
+                                <div className="card-header bg-transparent border-0 text-center">
+                                    <h2 className="mb-0"><i className="far fa-clone pr-1"></i>List of TimeSheets</h2>
+                                </div>
+                                <hr />
+                                <div className="card-body pt-0">
+                                    <table className='table table-striped'>
+                                        <thead>
+                                            <tr>
+                                                <th>Sheet Id</th>
+                                                <th>Sheet Date</th>
+                                                <th>Last Login</th>
+                                                <th>Last Logout</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {
+                                                empSheet.map((value,index)=>{
+                                                    return(
+                                                        <tr key={value.sheetId}>
+                                                            <td className='values'>{ value.sheetId }</td>
+                                                            <td className='values'>{ value.sheetDate }</td>
+                                                            <td className='values'>{ value.lastLogInTime }</td>
+                                                            <td className='values'>{ value.lastLogOutTime }</td>
+                                                            <td className='values'><Link className='nav-link p-0' to={`/login/${value.employeeId}/${value.sheetDate}`}>View</Link></td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            
-                <div className='timeSheetButton text-center'><button className='btn btn-dark' onClick={()=>{setShow(true)}}>Profile</button></div>
+            </div>
         </div>
-        }
+        </section>
+        </section>
+            
         </React.Fragment>
     )
 }
