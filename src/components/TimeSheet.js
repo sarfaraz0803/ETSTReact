@@ -7,17 +7,16 @@ const TimeSheet = () => {
     const { slug, slug1 } = useParams()
     const [finalSheet, setFinalSheet] = useState({sheetId:"",employeeId:"",sheetDate: "",sheetCreatedAt: "",lastLogInTime: "", lastLogOutTime: "",empTask: []})
 
-    useEffect(()=>setSheetDetails(),[])
-
-    function setSheetDetails(){
+    useEffect(()=>{
         const empAcc = JSON.parse(localStorage.getItem('EmployeeCredentials'))        
         const timeSheetList = empAcc.account.timeSheet
         const oneSheet = timeSheetList.filter(val=> val.sheetDate === slug1)
         const tymSheet = oneSheet[0]
         setFinalSheet((preValue)=>{return {...preValue, sheetId:tymSheet.sheetId,employeeId:tymSheet.employeeId,sheetDate:tymSheet.sheetDate,sheetCreatedAt:tymSheet.sheetCreatedAt,lastLogInTime:tymSheet.lastLogInTime,
-        lastLogOutTime:tymSheet.lastLogOutTime,empTask:tymSheet.empTask}})
-        
-    }
+        lastLogOutTime:tymSheet.lastLogOutTime,empTask:tymSheet.empTask}})        
+    },[slug1])
+
+    
 
     return (
         <React.Fragment>

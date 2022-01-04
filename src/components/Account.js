@@ -9,10 +9,9 @@ const Account = () => {
     const [empAcc, setEmpAcc] = useState({id:"",username:"",name:"",address:"",age:"",email:"",mobile:"",gender:"",department:"",socialCategory:"",
         physicallyChallenged:"",religion:"",dateOfBirth:"",maritalStatus:"",profileStatus:"",fatherName:""})
     const [empSheets,setEmpSheets] = useState([])
+    
 
-    useEffect(()=>getEmployee(),[])
-
-    function getEmployee(){
+    useEffect(()=>{
         Service.getAccountById(slug)
         .then(res=>{
             if(res.data.msg === 'Id not found'){
@@ -26,7 +25,9 @@ const Account = () => {
             }
         })
         .catch(err=>console.log(err))
-    }
+    },[slug])
+
+    
 
     return (
         <React.Fragment>
@@ -121,7 +122,7 @@ const Account = () => {
                                                 <td className='values'>{val.sheetDate}</td>
                                                 <td className='values'>{val.lastLogInTime}</td>
                                                 <td className='values'>{val.lastLogOutTime}</td>
-                                                <td className='values'><Link className='nav-link p-0' to={`/login/operations/${slug}/${val.sheetDate}`}>View</Link></td>
+                                                <td className='values'><Link className='nav-link' to={`/login/operations/${slug}/${val.sheetDate}`} >View</Link></td>
                                             </tr>
                                         )
                                     })

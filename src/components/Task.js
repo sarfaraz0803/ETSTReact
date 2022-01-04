@@ -10,56 +10,45 @@ const Task = () => {
     //const [taskList,setTaskList] = useState([])
 
 
-    useEffect(()=>setDefaults(),[])
+    useEffect(()=>alert('Under Development'),[])
+    
 
-    function setDefaults(){
-        console.log("hello")
-    //     const getOne = {id:slug,date:slug1}
+    // const getOne = {id:slug,date:slug1}
     //     Service.getOneSheet(getOne)
-    //         .then(res=>{
-    //            if(res.data === 'No Sheet for given empId of given date'){
-    //                 alert('No Sheet for given empId of given date')
-    //             }else{
-    //                 setTaskList(()=>res.data.empTask)
-    //             }
-    //         })
-    //        .catch(err=>console.log(err))
+    //     .then(res=>{
+    //         if(res.data === 'No Sheet for given empId of given date'){
+    //             alert('No Sheet for given empId of given date')
+    //         }else{
+    //             //console.log(res.data.empTask)
+    //             setTaskList(()=>res.data.empTask.filter(val=> val.taskId === slug2 ))
+    //         }
+    //     })
+    //     .catch(err=>console.log(err))
+    // function setTaskDetails(){
+    //     const finalTask = taskList[0]
+    //     setEmployeeTask((preValue)=>{return{...preValue,taskId:finalTask.taskId,taskName:finalTask.taskName,description:finalTask.description,taskCreation:finalTask.taskCreation,
+    //         durationOfTask:finalTask.durationOfTask,taskExpiryDate:finalTask.taskExpiryDate,comment:finalTask.comment,status:finalTask.status,consumedHours:finalTask.consumedHours,
+    //         remainingHours:finalTask.remainingHours,progress:finalTask.progress }})
 
-    //     setTimeout(() => {
-    //         const oneTask = taskList.filter(val=> val.taskId === slug2 )
-    //     const finalTask = oneTask[0]
-    //     console.log(oneTask)
-    //     if(finalTask !== null){
-    //         setEmployeeTask((preValue)=>{return{...preValue,taskId:finalTask.taskId,taskName:finalTask.taskName,description:finalTask.description,taskCreation:finalTask.taskCreation,
-    //             durationOfTask:finalTask.durationOfTask,taskExpiryDate:finalTask.taskExpiryDate,comment:finalTask.comment,status:finalTask.status,consumedHours:finalTask.consumedHours,
-    //             remainingHours:finalTask.remainingHours,progress:finalTask.progress }})
-    //         } 
-    //     }, 3000);
-        
-        
-    }
+    // }
+    // setTaskDetails()    
     
+
+
     
-             
-
-
-
-
-    //  Input_Field_Handler
+    //  Task_Input_Field_Handler
     function taskInputHandler(e){
        const { name, value } = e.target
         setEmployeeTask((preValue)=>{return {...preValue, [name]:value}})
     }
 
+    //  Task_Update_Function
     function updateTaskField(){
         const updatedTask = {empId:slug,date:slug1,taskId:employeeTask.taskId,taskName:"",description:"",durationOfTask:"",taskExpiryDate:"",comment:"" }
         console.log(updatedTask)
     }
 
     
-
-    
-
     return (
         <React.Fragment>
         <NavBar flag={false} role={'Manager'} />

@@ -5,18 +5,24 @@ import NavBar from './NavBar'
 import Service from './Service'
 import { Button, Modal, Form} from 'react-bootstrap'
 
-const EmpProfile = (props) => {
-    const wholeAcc = props.empData
-    const empCre = props.empCre
-    const [employeeData, setEmployeeData] = useState({id:wholeAcc._id,username:wholeAcc.username,password:empCre.password,name:wholeAcc.employee.name,address:wholeAcc.employee.address,age:wholeAcc.employee.age,
-        email:wholeAcc.employee.email,mobile:wholeAcc.employee.mobile,gender:wholeAcc.employee.gender,department:wholeAcc.employee.department,socialCategory:wholeAcc.employee.socialCategory,
-        physicallyChallenged:wholeAcc.employee.physicallyChallenged,religion:wholeAcc.employee.religion,dateOfBirth:wholeAcc.employee.dateOfBirth,maritalStatus:wholeAcc.employee.maritalStatus,
-        profileStatus:wholeAcc.employee.profileStatus,fatherName:wholeAcc.employee.fatherName})
-    const empSheet = props.empData.timeSheet
+const EmpProfile = () => {
     const [updateEmpModal,setUpdateEmpModal] = useState(false)  //  Employee_Account_Update_Modal_Handler
+    const [employeeData, setEmployeeData] = useState({id:0,username:"",password:"",name:"",address:"",age:0,email:"",mobile:"",gender:"",department:"",socialCategory:"",physicallyChallenged:"",religion:"",
+        dateOfBirth:"",maritalStatus:"",profileStatus:"",fatherName:""})
+    const [empSheet, setEmpSheet ] = useState([]) // props.empData.timeSheet
+    
+    useEffect(()=>{
+        const empStore = JSON.parse(localStorage.getItem('EmployeeCredentials')).account
+        const empCre = JSON.parse(localStorage.getItem('EmpCre'))
+        setEmployeeData((preValue)=>{return {...preValue,id:empStore._id,username:empStore.username,password:empCre.password,name:empStore.employee.name,address:empStore.employee.address,age:empStore.employee.age,
+        email:empStore.employee.email,mobile:empStore.employee.mobile,gender:empStore.employee.gender,department:empStore.employee.department,socialCategory:empStore.employee.socialCategory,
+        physicallyChallenged:empStore.employee.physicallyChallenged,religion:empStore.employee.religion,dateOfBirth:empStore.employee.dateOfBirth,maritalStatus:empStore.employee.maritalStatus,
+        profileStatus:empStore.employee.profileStatus,fatherName:empStore.employee.fatherName}})
+        setEmpSheet(()=>empStore.timeSheet)        
+    },[])   
 
     
-
+    //  Upadte_Account_Information_Function
     function updateEmpDetails(e){
         e.preventDefault()
         const employeeDetail = {_id:employeeData.id, username:employeeData.username, password:employeeData.password,employee:{name:employeeData.name,address:employeeData.address,age:employeeData.age,
@@ -35,6 +41,7 @@ const EmpProfile = (props) => {
         .catch(err=>console.log(err))
     }
 
+    //  Update_Modal_Input_Field_Handler
     function updateModalInputHandler(e){
         const { name, value } = e.target
         setEmployeeData((preValue)=>{return{...preValue, [name]:value}})

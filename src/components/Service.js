@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const MANAGER_API_URL = 'http://localhost:8764/manager'
-const EMPLOYEE_API_URL = 'http://localhost:8763/employeeProfile'
+const MANAGER_API_URL = 'http://manager-env.eba-m2iwkpce.us-east-1.elasticbeanstalk.com/manager'
+const EMPLOYEE_API_URL = 'http://employee-env.eba-bmwashtr.us-east-1.elasticbeanstalk.com/employeeProfile'
 
 class Service{
 
@@ -20,8 +20,7 @@ class Service{
     addNewAccount(account){
         const store = JSON.parse(localStorage.getItem('ManagerCredentials'))
         const authAxios = axios.create({baseURL:MANAGER_API_URL,headers:{UserId:`${store.userId}`,Authorization:`${store.token}`}})
-        return authAxios.post('/addAccount',account)
-            
+        return authAxios.post('/addAccount',account)        
     }
 
     getAllAccounts(){
@@ -86,6 +85,7 @@ class Service{
 
     employeeLogin(empLoginData){
         return axios.post(EMPLOYEE_API_URL+'/login',empLoginData)
+        
     }
 
     employeeLogout(){

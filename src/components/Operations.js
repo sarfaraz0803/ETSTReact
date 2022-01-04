@@ -3,7 +3,7 @@ import { Button, Modal, Form } from 'react-bootstrap'
 import NavBar from './NavBar'
 import '../style/Operations.css'
 import Service from './Service'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 const Operations = () => {
@@ -26,6 +26,8 @@ const Operations = () => {
     const [oneSheet, setOneSheet] = useState({id:0,date:""})
     const [updateTask, setUpdateTask] = useState({empId:0,taskDate:"",taskId:"",taskName:"",description:"",durationOfTask:0,taskExpiryDate:"",comment:""})
     const [delTaskDetail, setDelTaskDetail] = useState({empId:0,date:"",taskId:""})
+
+    const navi = useNavigate()
 
     useEffect(()=>getAllAccounts(),[])
 
@@ -97,7 +99,7 @@ const Operations = () => {
     function getAllAccounts(){
         Service.getAllAccounts()
         .then(res=>{
-            setAllAccounts(()=>{return res.data})
+            setAllAccounts(()=>res.data)
         })
         .catch(err=>console.log(err))
     }
@@ -112,7 +114,9 @@ const Operations = () => {
                     alert('Employee Id Not Exist')
                     setCommonEmpId(0)
                 }else{
-                    console.log(res.data)
+                    setAllAccounts(()=>{return [res.data]})
+                    setCommonEmpId(0)
+                    //console.log(res.data)
                 }
             })
             .catch(err=>console.log(err))
@@ -180,7 +184,8 @@ const Operations = () => {
                 if(res.data === 'TimeSheets Not Exist'){
                     alert('TimeSheets Not Exist for this EmployeeId')
                 }else{
-                    console.log(res.data)
+                    navi(`/login/operations/${commonEmpId}`)
+                    //console.log(res.data)
                 }
             })
             .catch(err=>console.log(err))
@@ -200,7 +205,8 @@ const Operations = () => {
                 if(res.data === 'No Sheet for given empId of given date'){
                     alert('No Sheet for given empId of given date')
                 }else{
-                    console.log(res.data)
+                    navi(`/login/operations/${oneSheet.id}/${oneSheet.date}`)
+                    //console.log(res.data)
                 }
             })
             .catch(err=>console.log(err))
@@ -579,9 +585,9 @@ const Operations = () => {
                 <div className='col-lg-3 col-md-3 col-sm-4 border border-success column_1'>
                     <button className='btn btn-primary my-2 m-1' title='Add New Account for Employee ' onClick={()=>{setAddAccountModal(true)}}>Add Account</button>  {/* Working */}
                     <button className='btn btn-primary my-2 m-1' title='All Employees Accounts List' onClick={getAllAccounts}>All Accounts List</button>    {/* Working but Not Designed */}
-                    <button className='btn btn-primary my-2 m-1' title='Get One Employee Account By Employee Id' onClick={()=>{setOneAccModal(true)}}>Get Account By Id</button>    {/* Working but not designed */}
+                    <button className='btn btn-primary my-2 m-1' title='Get One Employee Account By Employee Id' onClick={()=>{setOneAccModal(true)}}>Get One Account</button>    {/* Working but not designed */}
                     {/*<button className='btn btn-primary my-2 m-1' onClick={()=>{setUpdateAccountModal(true)}}>Update Account By Id</button>   */}
-                    <button className='btn btn-primary my-2 m-1' title='Delete Employee Account By Employee Id' onClick={()=>{setDeleteAccountModal(true)}}>Delete Account By Id</button>  {/* Working */}
+                    <button className='btn btn-primary my-2 m-1' title='Delete Employee Account By Employee Id' onClick={()=>{setDeleteAccountModal(true)}}>Delete Account</button>  {/* Working */}
                     <button className='btn btn-primary my-2 m-1' title='Assign Task to any Employee' onClick={()=>{setAssignTaskModal(true)}}>Assign Task</button>  {/* Working */}
                     <button className='btn btn-primary my-2 m-1' title='Get All TimeSheets of One Employee' onClick={()=>{setAllSheetsModal(true)}}>AllTimeSheets</button> {/* Working but not Designed */}
                     <button className='btn btn-primary my-2 m-1' title='Get One TimeSheet of Any Employee' onClick={()=>{setOneSheetModal(true)}}>GetOneSheet</button>    {/* Working but not Designed */}

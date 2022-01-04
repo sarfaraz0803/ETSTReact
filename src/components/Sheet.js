@@ -8,9 +8,7 @@ const Sheet = () => {
     const { slug, slug1 } = useParams()
     const [finalSheet, setFinalSheet] = useState({sheetId:"",employeeId:"",sheetDate: "",sheetCreatedAt: "",lastLogInTime: "", lastLogOutTime: "",empTask: []})
 
-    useEffect(()=>setSheetDetails(),[])
-
-    function setSheetDetails(){
+    useEffect(()=>{
         const getOne = {id:slug,date:slug1}
         Service.getOneSheet(getOne)
             .then(res=>{
@@ -21,8 +19,9 @@ const Sheet = () => {
                         lastLogOutTime:res.data.lastLogOutTime,empTask:res.data.empTask}})
                 }
             })
-            .catch(err=>console.log(err))        
-    }
+            .catch(err=>console.log(err))
+    },[slug,slug1])
+
 
     return (
         <React.Fragment>
@@ -76,7 +75,7 @@ const Sheet = () => {
                     </div>
                     </div>
                 </div> 
-                </div>
+            </div>
 
             <div className="row mx-auto second_row">
                 <div className="card shadow-sm my-1">
@@ -104,7 +103,7 @@ const Sheet = () => {
                                             <td>{val.taskName}</td>
                                             <td>{val.durationOfTask}</td>
                                             <td>{val.taskExpiryDate}</td>
-                                            <td><Link to={`/login/operations/${slug}/${slug1}/${val.taskId}`}>view</Link></td>
+                                            <td><Link className='nav-link' to={`/login/operations/${slug}/${slug1}/${val.taskId}`}>view</Link></td>
                                             </tr>
                                         )
                                     })

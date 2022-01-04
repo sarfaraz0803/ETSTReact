@@ -6,35 +6,36 @@ import EmpProfile from './EmpProfile'
 import NavBar from './NavBar'
 
 const Login = () => {
-    const [login,setLogin]= useState({username:"",password:"",role:"",loggedIn:false})
-    const [manResponseData, setManResponseData] = useState({userId:"",username:"",name:"",email:"",password:"",token:""}) 
-    const [empResponseData, setEmpResponseData] = useState({account:{},token:""})       
+    const [login,setLogin]= useState({username:"",password:"",role:"",loggedIn:false})  
+    //const [manResponseData, setManResponseData] = useState({userId:"",username:"",name:"",email:"",password:"",token:""})  
+    //const [empResponseData, setEmpResponseData] = useState({account:{},token:""})       
 
     useEffect(()=>storeCollector(),[])
+    
+    // Login_Form_Input_Handler
     const handleInput = (e)=>{
         const { name, value } = e.target
-
-        setLogin((preValue)=>{
-            return {...preValue, [name]:value}
-        })
-
+        setLogin((preValue)=>{return {...preValue, [name]:value}})
     }
 
+    // This store the credentails of loggedIn User
     const storeCollector = ()=>{
-        let store = JSON.parse(localStorage.getItem('ManagerCredentials'))
+        const store = JSON.parse(localStorage.getItem('ManagerCredentials'))
         if( store !== null && store.token !== ''){
             setLogin((preValue)=>{return {...preValue, role:"Manager", loggedIn:true}})
-            setManResponseData((preValue)=>{return {userId:store.userId, username:store.username, name:store.name, email:store.email, password:store.password, token:store.token}})
+            //setManResponseData((preValue)=>{return {userId:store.userId, username:store.username, name:store.name, email:store.email, password:store.password, token:store.token}})
         }
-        let empStore = JSON.parse(localStorage.getItem('EmployeeCredentials'))
+        const empStore = JSON.parse(localStorage.getItem('EmployeeCredentials'))
         const empCre = JSON.parse(localStorage.getItem('EmpCre'))
         if(empStore !== null){
             setLogin((preValue)=>{return {...preValue,username:empCre.username, password:empCre.password, role:"Employee", loggedIn:true}})
-            setEmpResponseData((preValue)=>{return {...preValue, account:empStore.account,token:empStore.token}})
+            //setEmpResponseData((preValue)=>{return {...preValue, account:empStore.account,token:empStore.token}})
             
         }
     }
     
+
+    //  This handle form submission 
     const handleSubmit=(e)=>{
         e.preventDefault()
         let loginDetail = {username:login.username, password: login.password}
@@ -97,8 +98,8 @@ const Login = () => {
             </div> 
             </React.Fragment>          
             : login.role === "Manager"?
-                 <ManagerComp man_data={manResponseData} />
-                 : <EmpProfile empCre={login} empData={empResponseData.account} />
+                 <ManagerComp />
+                 : <EmpProfile />
             
         }
         </React.Fragment>   

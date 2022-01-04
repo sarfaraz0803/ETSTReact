@@ -9,9 +9,7 @@ const EmpTask = () => {
     const { slug, slug1, slug2 } = useParams()    
     const [timer, setTimer] = useState({active:false,value:0,result:0})
 
-    useEffect(()=>setDefaults(),[])
-
-    function setDefaults(){
+    useEffect(()=>{
         const empAcc = JSON.parse(localStorage.getItem('EmployeeCredentials'))
         const sheet = empAcc.account.timeSheet.filter(val => val.sheetDate === slug1)
         const finalSheet = sheet[0]
@@ -20,14 +18,15 @@ const EmpTask = () => {
         const finalTask = oneTask[0]
         setEmployeeTask((preValue)=>{return{...preValue,taskId:finalTask.taskId,taskName:finalTask.taskName,description:finalTask.description,taskCreation:finalTask.taskCreation,durationOfTask:finalTask.durationOfTask,
            taskExpiryDate:finalTask.taskExpiryDate,comment:finalTask.comment,status:finalTask.status,consumedHours:finalTask.consumedHours,remainingHours:finalTask.remainingHours,progress:finalTask.progress }})
+    },[slug1,slug2])
 
-    }
-
+    //  Update_Task_Modal_Input_Fields_Handler
     function taskInputHandler(e){
         const { name, value } = e.target
         setEmployeeTask((preValue)=>{return {...preValue, [name]:value}})
     }
 
+    //  Update_Task_Function
     function updateTaskField(){
         const updatedTask = {empId:slug,date:slug1,taskId:employeeTask.taskId,comment:employeeTask.comment,status:employeeTask.status,consumedHours:Number(employeeTask.consumedHours) }
         Service.empTaskUpdate(updatedTask)
@@ -42,19 +41,18 @@ const EmpTask = () => {
         //console.log(updatedTask)
     }
 
+    //  Counter_For_Task_To_Count_Working_Hour_On_Task
     function counter(){
         if(timer.active !== true){
-            console.log(`StartTime : ${new Date().getTime()}`)
             setTimer((preValue)=>{return {...preValue, active:true,value:new Date().getTime()}})
-            
-        }else{
+        }else{            
             const workDuration = Number(((new Date().getTime() - timer.value)/(60*60*1000)).toFixed(3))
             setTimer((preValue)=>{return {...preValue, active:false,value:new Date().getTime(),result:workDuration}})
-            console.log(`StopTime : ${timer.value} and work duration : ${workDuration} hours`)
-            
-            const updateConsumedHours = employeeTask.consumedHours+workDuration
-            setEmployeeTask((preValue)=>{return {...preValue,consumedHours:updateConsumedHours}})
-
+            //console.log(`StopTime : ${timer.value} and work duration : ${workDuration} hours`)
+            const updatedConsumedHours = Number(employeeTask.consumedHours)+workDuration
+            const updatedRemainingHours = Number(employeeTask.remainingHours)-updatedConsumedHours
+            const updatedProgress = (updatedConsumedHours*100/Number(employeeTask.durationOfTask)).toFixed(3)
+            setEmployeeTask((preValue)=>{return {...preValue,consumedHours:updatedConsumedHours,remainingHours:updatedRemainingHours,progress:updatedProgress}})
         }
     }
 
