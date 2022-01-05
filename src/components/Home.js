@@ -4,7 +4,7 @@ import '../style/Home.css'
 import NavBar from './NavBar'
 
 
-const Home = () => {
+const Home = () => {   
 
     return (
        <React.Fragment>
